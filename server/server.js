@@ -18,13 +18,19 @@ app.get('/', function (req, res) {
 })
 
 app.get('/download', cors(corsOptions), function(req, res){
-    const file = `${__dirname}/docx_file/simple.docx`;
-    console.log(file, 33333)
+    const file = `${__dirname}/docx_files/simple.docx`;
+    // console.log(file, 33333)
     res.download(file); // Set disposition and send it.
 });
-  
-var server = app.listen(server_port, function () {
-    var host = server.address().address
-    var port = server.address().server_port
-    console.log("Example app listening at http://%s:%s", host, port)
+
+app.listen(server_port, function () {
+    // var host = server.address().address
+    // var port = server.address().server_port
+    // console.log("Example app listening at http://%s:%s", host, port)
 })
+
+// var server = app.listen(server_port, function () {
+//     var host = server.address().address
+//     var port = server.address().server_port
+//     console.log("Example app listening at http://%s:%s", host, port)
+// })
