@@ -1,8 +1,8 @@
-var express = require('express');
+var express = require('express')
 const axios = require('axios')
-const cors = require('cors');
+const cors = require('cors')
 
-var app = express();
+var app = express()
 app.use(cors())
 
 const client_port = 3000
@@ -14,19 +14,16 @@ var corsOptions = {
 }
 
 app.get('/', function (req, res) {
-    res.send('response from server');
+    res.send('response from server')
 })
 
 app.get('/download', cors(corsOptions), function(req, res){
-    const file = `${__dirname}/docx_files/simple.docx`;
-    // console.log(file, 33333)
-    res.download(file); // Set disposition and send it.
+    const file = `${__dirname}/docx_files/simple.docx`
+    res.download(file)
 });
 
 app.listen(server_port, function () {
-    // var host = server.address().address
-    // var port = server.address().server_port
-    // console.log("Example app listening at http://%s:%s", host, port)
+    console.log("Listening at port ", server_port)
 })
 
 // var server = app.listen(server_port, function () {
