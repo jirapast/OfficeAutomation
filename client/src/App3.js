@@ -1,66 +1,139 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-
+import FormHelperText from '@mui/material/FormHelperText';
+import * as docx from 'docx'
+import { ConstructionOutlined } from '@mui/icons-material';
+import { Document, Packer, Paragraph, TextRun } from "docx";
+import { saveAs } from 'file-saver';
+import PizZip from 'pizzip';
+import PizZipUtils from 'pizzip/utils/index.js';
+import Docxtemplater from 'docxtemplater';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import clsx from 'clsx';
-// import InputAdornment from '@material-ui/core/InputAdornment';
 
-// import { makeStyles } from '@material-ui/core/styles';
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     display: 'flex',
-//     flexWrap: 'wrap',
-//   },
-//   margin: {
-//     margin: theme.spacing(1),
-//   },
-//   withoutLabel: {
-//     marginTop: theme.spacing(3),
-//   },
-//   textField: {
-//     width: '25ch',
-//   },
-// }));
+
+function loadFile(url, callback) {
+    PizZipUtils.getBinaryContent(url, callback);
+  }
 
 export default function FullWidthTextField() {
   // const classes = useStyles();
 
   const [age, setAge] = React.useState('');
+  const [unit, setUnit] = React.useState('');
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-    console.log(1111, age)
+  const [_tag_report_number, set_tag_report_number] = React.useState('');
+
+  const change_unit = (event) => {
+    console.log(1111, unit, event.target.value)
+    event.preventDefault();
+    console.log(1111, unit, event.target.value)
+    setUnit(event.target.value);
+    console.log(1111, unit, event.target.value)
   }
 
-  // const { classes } = this.props;
+  const handleChange = (event) => {
 
+  }
+
+  const change_tag_report_number = (event) => {
+      set_tag_report_number(event.target.value);
+      console.log(1111, _tag_report_number)
+  }
+
+  
+
+  const options = [
+      {label: 'สถานีตำรวจ', value: 'สถานีตำรวจ'  },
+    // {label: 'React',      value: 'กกกกก'   },
+  ]
+
+
+
+  const submit_search_B = () => {
+    console.log(31231231231231231, _tag_report_number)
+    generateDocument()
+  }
+
+  const generateDocument = () => {
+    console.log(666666, unit)
+    loadFile(
+      "http://localhost:4000/download",
+      function (error, content) {
+          if (error) {
+              throw error;
+          }
+          console.log(999, content, "http://localhost:4000/download")
+          var zip = new PizZip(content);
+          console.log(999, zip)
+
+          var doc = new Docxtemplater(zip, {
+            paragraphLoop: true,
+            linebreaks: true,
+          });
+
+          console.log(999555)
+          // Render the document (Replace {first_name} by John, {last_name} by Doe, ...)
+          doc.render({
+            tag_report_number: _tag_report_number,
+            unit: unit
+          });
+          console.log(999555888)
+          var blob = doc.getZip().generate({
+              type: "blob",
+              mimeType:
+                  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              // compression: DEFLATE adds a compression step.
+              // For a 50MB output document, expect 500ms additional CPU time
+              compression: "DEFLATE",
+          });
+          console.log(99955588888887767676, blob)
+          // Output the document using Data-URI
+          saveAs(blob, "output.docx");
+      }
+  );
+    
+  };
 
   return (
-    // <Box sx={{width: 500, maxWidth: '100%',}}>
     <Box sx={{maxWidth: '100%',}}>
     
     <Box sx={{maxWidth: '100%',}}>
       เลขรายงาน
-      <TextField sx={{ m: 1, minWidth: 200 }} id="outlined-name" label="" /*value={name} onChange={handleChange}*/ />
+      <TextField sx={{ m: 1, minWidth: 200 }} id="outlined-name" label="" onChange={change_tag_report_number} />      
     </Box>
 
+    <Box sx={{maxWidth: '100%',}}>
+      <FormControl sx={{ m: 1, minWidth: 200 }}>
+        <InputLabel id="demo-simple-select-label">หน่วยที่ส่งตรวจ</InputLabel>
+        <Select value={age} onChange={change_unit} displayEmpty inputProps={{ 'aria-label': 'Without label' }} >
+          <MenuItem value=""><em>None</em></MenuItem>
+          {options?.map(option => {
+            return (
+              <MenuItem key={option.label} value={option.value}>
+                {option.label ?? option.value}
+                {/* {option.label} */}
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </FormControl>
+    </Box>
 
-
+    <Button type="submit" variant="contained" sx={{ ml: 2, mr: 1 }} onClick={submit_search_B}>Search_B</Button>
     
     <Box sx={{maxWidth: '100%',}}>
       เชื่อมโยงกับงาน กก ที่ 
       <TextField sx={{ m: 1, minWidth: 200 }} id="outlined-name" label="" /*value={name} onChange={handleChange}*/ />
     </Box>
 
-
     <Box sx={{maxWidth: '100%',}}> บันทึกข้อมูลนำส่ง </Box>
-      
       
     <Box sx={{maxWidth: '100%',}}>
       <FormControl sx={{ m: 1, minWidth: 200 }}>

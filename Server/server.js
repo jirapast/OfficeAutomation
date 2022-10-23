@@ -113,7 +113,7 @@ app.get('/deletedb', function (req, res) {
 })
 
 app.get('/download', cors(corsOptions), function(req, res){
-    const file = `${__dirname}/docx_files/simple.docx`
+    const file = `${__dirname}/docx_files/meta.docx`
     res.download(file)
 });
 
