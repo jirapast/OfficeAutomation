@@ -29,13 +29,15 @@ export default function FullWidthTextField() {
   const [unit, setUnit] = React.useState('');
 
   const [_tag_report_number, set_tag_report_number] = React.useState('');
+  const [_book_number, set_book_number] = React.useState('');
+  
+  const [_date1, set_date1] = React.useState('');
+  const [_date2, set_date2] = React.useState('');
 
   const change_unit = (event) => {
     console.log(1111, unit, event.target.value)
     event.preventDefault();
-    console.log(1111, unit, event.target.value)
     setUnit(event.target.value);
-    console.log(1111, unit, event.target.value)
   }
 
   const handleChange = (event) => {
@@ -47,11 +49,27 @@ export default function FullWidthTextField() {
       console.log(1111, _tag_report_number)
   }
 
+  const change_book_number = (event) => {
+    set_book_number(event.target.value);
+    console.log(1111, _tag_report_number)
+  }
+
+  const change_date1 = (event) => {
+    set_date1(event.target.value);
+  }
+
+  const change_date2 = (event) => {
+    set_date2(event.target.value);
+  }
+
+
+  
+
   
 
   const options = [
       {label: 'สถานีตำรวจ', value: 'สถานีตำรวจ'  },
-    // {label: 'React',      value: 'กกกกก'   },
+      {label: 'React',      value: 'กกกกก'   },
   ]
 
 
@@ -125,6 +143,30 @@ export default function FullWidthTextField() {
         </Select>
       </FormControl>
     </Box>
+
+
+    <Box sx={{maxWidth: '100%',}}>
+      <TextField sx={{ m: 1, minWidth: 200 }} id="standard-basic" variant="standard" label="เลข บก. ที่" onChange={change_date1} />
+      {/* ลงรับ บก. วันที่ */}
+      <TextField id="date" label="" type="date" defaultValue="" sx={{ width: 220 }} InputLabelProps={{ shrink: true, }} />
+    </Box>
+
+    <Box sx={{maxWidth: '100%',}}>
+      <TextField sx={{ m: 1, minWidth: 200 }} id="standard-basic" variant="standard" label="เลข บก. ที่" onChange={change_date2} />
+      {/* ลงรับ บก. วันที่ */}
+      <TextField id="date" label="" type="date" defaultValue="" sx={{ width: 220 }} InputLabelProps={{ shrink: true, }} />
+    </Box>
+
+    <Box sx={{maxWidth: '100%',}}>
+      <TextField sx={{ m: 1, minWidth: 200 }} id="standard-basic" variant="standard" label="เลข บก. ที่" /*value={name} onChange={handleChange}*/ />
+      ลงรับ บก. วันที่
+      <TextField id="date" label="" type="date" defaultValue="" sx={{ width: 220 }} InputLabelProps={{ shrink: true, }} />
+    </Box>
+
+
+
+
+
 
     <Button type="submit" variant="contained" sx={{ ml: 2, mr: 1 }} onClick={submit_search_B}>Search_B</Button>
     
