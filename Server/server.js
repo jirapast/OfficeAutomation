@@ -25,16 +25,7 @@ function checkDB(table_name) {
         if (err) { return console.error(err.message) }
         console.log(`PRAGMA table_info `, res)
     })
-    db.serialize(() => {
-        db.each(`SELECT rowid, item FROM ` + table_name, (err, row) => {
-            if (err) { console.err(err.message) }
-            console.log('555', row, row.item, row.rowid)
-        })
-    })
-    db.close((err) => {
-        if (err) { return console.error(err.message) }
-        // console.log('Close the database connection.')
-    })
+    db
     return 1
 }
 
